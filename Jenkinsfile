@@ -4,7 +4,6 @@ pipeline {
     environment {
         IMAGE_NAME = "html-sayfam"
         CONTAINER_NAME = "html-sayfam-container"
-      
     }
 
     stages {
@@ -17,42 +16,35 @@ pipeline {
 
         stage('Docker Image Oluştur') {
             steps {
-                echo 'Docker image oluşturuluyor...'
-                sh 'docker build -t $IMAGE_NAME .'
+                bat 'docker build -t %IMAGE_NAME% .'
             }
         }
 
         stage('Eski Containerı Durdur ve Sil') {
             steps {
-                script {
-                    echo 'Eski container kontrol ediliyor...'
-                    sh """
-                        if [ \$(docker ps -aq -f name=$CONTAINER_NAME) ]; then
-                            docker stop $CONTAINER_NAME || true
-                            docker rm $CONTAINER_NAME || true
-                        fi
-                    """
-                }
+                bat '''
+                docker stop %CONTAINER_NAME% || exit 0
+                docker rm %CONTAINER_NAME% || exit 0
+                '''
             }
         }
 
         stage('Yeni Container Oluştur') {
             steps {
-                echo 'Yeni container başlatılıyor...'
-                sh 'docker run -d -p 8080:80 --name $CONTAINER_NAME $IMAGE_NAME'
+                bat 'docker run -d -p 8080:80 --name %CONTAINER_NAME% %IMAGE_NAME%'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline başarıyla tamamlandı ✅'
+            echo '✅ Pipeline başarıyla tamamlandı'
         }
         failure {
-            echo 'Bir hata oluştu ❌'
+            echo '❌ Bir hata oluştu'
         }
         always {
-            echo 'Pipeline tamamlandı (başarılı veya başarısız)'
+            echo 'ℹ️ Pipeline tamamlandı (başarılı veya başarısız)'
         }
     }
 }
