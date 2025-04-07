@@ -4,6 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = "html-sayfam"
         CONTAINER_NAME = "html-sayfam-container"
+      
     }
 
     stages {
