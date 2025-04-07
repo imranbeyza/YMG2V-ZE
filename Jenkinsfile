@@ -1,11 +1,14 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPush() // GitHub'dan yapılan push işlemi tetikleyicisi
+    }
+
     environment {
         IMAGE_NAME = "html-sayfam"
         CONTAINER_NAME = "html-sayfam-container"
         PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/c/Program Files/Docker/Docker/resources/bin:${env.PATH}"
-        
     }
 
     stages {
