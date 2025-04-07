@@ -28,17 +28,8 @@ pipeline {
 
         stage('Eski Containerı Durdur ve Sil') {
             steps {
-                script {
-                    echo 'Eski container kontrol ediliyor...'
-                    bat '''
-                        echo "Eski container durduruluyor ve siliniyor..."
-                        for /f "tokens=*" %%i in ('docker ps -aq -f "name=%CONTAINER_NAME%"') do (
-                            echo Durduruluyor: %%i
-                            docker stop %%i || echo Hata: Docker container stop komutu başarısız
-                            docker rm %%i || echo Hata: Docker container rm komutu başarısız
-                        )
-                    '''
-                }
+                echo 'Eski container durduruluyor ve siliniyor...'
+                bat "docker rm -f %CONTAINER_NAME% || true"
             }
         }
 
