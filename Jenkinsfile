@@ -10,7 +10,7 @@ pipeline {
         stage('Klonla') {
             steps {
                 echo 'GitHub reposu klonlanıyor...'
-                git 'https://github.com/kullaniciAdi/repo-adi.git'
+                git 'https://github.com/imranbeyza/YMG2V-ZE.git'
             }
         }
 
