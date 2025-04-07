@@ -8,7 +8,7 @@ pipeline {
     environment {
         IMAGE_NAME = "html-sayfam"
         CONTAINER_NAME = "html-sayfam-container"
-        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/c/Program Files/Docker/Docker/resources/bin:${env.PATH}"
+        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
     }
 
     stages {
@@ -22,7 +22,7 @@ pipeline {
         stage('Docker Image Oluştur') {
             steps {
                 echo 'Docker image oluşturuluyor...'
-                sh 'docker build -t $IMAGE_NAME .'
+                bat 'docker build -t %IMAGE_NAME% .'
             }
         }
 
@@ -30,11 +30,11 @@ pipeline {
             steps {
                 script {
                     echo 'Eski container kontrol ediliyor...'
-                    sh """
-                        if [ \$(docker ps -aq -f name=$CONTAINER_NAME) ]; then
-                            docker stop $CONTAINER_NAME || true
-                            docker rm $CONTAINER_NAME || true
-                        fi
+                    bat """
+                        for /f "tokens=*" %%i in ('docker ps -aq -f name=%CONTAINER_NAME%') do (
+                            docker stop %%i
+                            docker rm %%i
+                        )
                     """
                 }
             }
@@ -43,7 +43,7 @@ pipeline {
         stage('Yeni Container Oluştur') {
             steps {
                 echo 'Yeni container başlatılıyor...'
-                sh 'docker run -d -p 8080:80 --name $CONTAINER_NAME $IMAGE_NAME'
+                bat 'docker run -d -p 8080:80 --name %CONTAINER_NAME% %IMAGE_NAME%'
             }
         }
     }
