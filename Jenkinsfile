@@ -15,7 +15,7 @@ pipeline {
         stage('Klonla') {
             steps {
                 echo 'GitHub reposu klonlanıyor...'
-                git 'https://github.com/imranbeyza/YMG2V-ZE.git'
+                git branch: 'main', url: 'https://github.com/imranbeyza/YMG2V-ZE.git'
             }
         }
 
