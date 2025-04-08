@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     triggers {
-        githubPush() // GitHub'dan yapılan push işlemi tetikleyicisi
+        githubPush() 
     }
 
     environment {
         IMAGE_NAME = "html-sayfam"
         CONTAINER_NAME = "html-sayfam-container"
-        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
+        PATH = "C:\Windows\System32;C:\\Program Files\\Docker\\Docker\\resources\\bin;"
     }
 
     stages {
@@ -16,6 +16,8 @@ pipeline {
             steps {
                 echo 'GitHub reposu klonlanıyor...'
                 git branch: 'main', url: 'https://github.com/imranbeyza/YMG2V-ZE.git'
+                docker build -t html-sayfam .
+                docker run -d -p 8080:80 html-sayfam
             }
         }
 
